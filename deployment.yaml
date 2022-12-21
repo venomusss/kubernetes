@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-lab-app
+  labels:
+    app: test-lab-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: test-lab-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: test-lab-app
+    spec:
+      containers:
+        - image: volodymyrmushii/test-lab-app:latest
+          name: test-lab-app
+          ports:
+            - containerPort: 8080
+              name: test-lab-app
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
